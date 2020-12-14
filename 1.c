@@ -1,31 +1,48 @@
 #include<stdio.h>
-
-int main(int argc, char const *argv[])
+int sum(int arr[]);
+int prod(int arr[]);
+int avg(int arr[]);
+void main()
 {
-	int high=0,low=0,i=0,sum=0,temp=0,m=0;
-	high=atoi(argv[2]);
-	low=atoi(argv[1]);
-	i=low;
-	if(high<low)
+	int i=0,arr[10],s,a,p;
+	for(i=0;i<10;i++)
 	{
-		printf("Invalid Range\n");
-		exit(0);
+		printf("Enter num%d:",i+1);
+		scanf("%d",&arr[i]);
 	}
-	for (i = low; i <=high; i++)
-	{
-		temp=i;
-		sum=0;
-		while(temp>0)    
-			{    
-				m=temp%10;    
-				sum=sum+m;    
-				temp=temp/10;
-			}
-			if (sum==8)
-				   {
-				   	printf("Number=%d\n",i);
-				   }     
-	}
+	s=sum(arr);
+	a=avg(arr);
+	p=prod(arr);
+	printf("Sum is %d\nProduct is %d\nAverage is %d\n",s,a,p);
+}
 
-	return 0;
+int sum(int a[])
+{
+	int tot=0,i=0;
+	for (i=0;i<10;i++)
+	{
+		tot+=a[i];
+	}
+	return tot;
+}
+
+int prod(int a[])
+{
+	int ptot=1,i=0;
+	for(i=0;i<10;i++)
+	{
+		ptot*=a[i];
+	}
+	return ptot;
+}
+
+int avg(int a[])
+{
+	 int atot=0,i=0,aver;
+	 for(i=0;i<10;i++)
+	 {
+	 	atot+=a[i];
+	 }
+	 aver=atot/10;
+	 return aver;
 }
