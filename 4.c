@@ -1,27 +1,56 @@
 #include<stdio.h>
-#include<string.h>
+#include <stdlib.h>
+#include<sys/types.h> 
+#include<unistd.h>
 
 int main(int argc, char const *argv[])
 {
-	int pid,i=0,cnt=0,len=0,j=0;
-	char *inp=argv[1];
+	int i=0,cnt=0,pid,vow,p[2],ret;
+	char str[100];
+
+	printf("Enter the string\n");
+	gets(str);
+
 	pid=fork();
-	if (pid==0)
+	ret=pipe(p);
+
+	if (ret==-1)
 	{
-
-		printf("Inside child process\n");
-		len=strlen(inp);
-
-		for (int i = 0; i < len;i++)
-		{
-			if (inp[i]=='a' || inp[i]=='e' || inp[i]=='i' ||inp[i]=='o' ||inp[i]=='u' ||inp[i]=='A' ||inp[i]=='E' ||inp[i]=='I' ||inp[i]=='O' ||inp[i]=='U')
-			{
-				cnt++;
-			}
-		}
-		
-			printf("Number of vowels in is %d\n",cnt);
+		printf("Pipe not created.\n");
 	}
-	wait();
+
+	if (pid==-1)
+		printf("Fork error. Child process not created");
+
+	else if(pid==0){
+		printf("This is child process\n");
+		close(p[1]);
+		write(p[0],&str,sizeof(str));
+		i=0;
+		while(str[i]!='\0'){
+			if (str[i]=='a'||str[i]=='e'||str[i]=='i'||str[i]=='o'||str[i]=='u'||str[i]=='A'||str[i]=='E'||str[i]=='I'||str[i]=='O'||str[i]=='U')
+			{
+				vow++;
+			}
+			i++;
+		}
+
+		printf("There are %d vowels in %s\n",vow,str );
+
+	}
+	
+	if (pid>0)
+	{
+		while(str[i]!='\0'){
+		cnt++;
+		i++;
+		}
+
+		printf("Count is %d\n",cnt );
+		close(p[0]);
+		write(p[1],&str,sizeof(str));
+		wait(10);
+	}
+
 	return 0;
 }
